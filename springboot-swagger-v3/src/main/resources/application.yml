@@ -9,3 +9,5 @@ springfox:
   documentation:
     swagger-ui:
       enabled: true
+
+#    預設url http://localhost:8080/swagger-ui/index.html
