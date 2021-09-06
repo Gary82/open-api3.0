@@ -1,11 +1,12 @@
 package com.practice;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class Main {
 
     public static void main(String[] args) {
+        createStream();
         loadedType();
         List<String> fruits = new ArrayList<>(Arrays.asList("apple", "banana", "pear", "peach", "watermelon","mango", "orange"));
         System.out.println("data: " + fruits);
@@ -21,8 +22,33 @@ public class Main {
         streamCount(fruits);
         streamReduce(fruits);
         streamForeach(fruits);
+        streamMin();
+        streamMax();
+        streamAnyMatch(fruits);
+        streamAllMatch(fruits);
+        streamNoneMatch(fruits);
+        streamFindFirst(fruits);
     }
 
+    private static void createStream(){
+        IntStream.rangeClosed(1, 10)
+                .forEach(num -> System.out.print(num));
+        System.out.println();
+        IntStream.range(1, 10)
+                .forEach(num -> System.out.print(num));
+        System.out.println();
+        LongStream.range(1L,10L)
+                        .forEach(num-> System.out.print(num));
+        System.out.println();
+        Stream.of("This", "is", "Java8", "Stream")
+                .forEach(System.out::println);
+        System.out.println();
+        Stream<Integer> stream1=Stream.of( 1 , 2 , 3 );
+        Stream<Integer> stream2=Stream.of( 4 , 5 , 7 );
+        Stream<Integer> concatStream=Stream.concat(stream1,stream2);
+        System.out.println(concatStream.collect(Collectors.toList()));
+
+    }
     /**
      * 延遲加載與急切加載
      * 延遲加載宣告時並不會使用，它們只是存於內存中，為當需要時才會call相關資源，主要用於節省資源
@@ -176,4 +202,69 @@ public class Main {
         }
         System.out.println();
     }
+
+    /**
+     * min 取最小值
+     * 回傳Optional格式
+     */
+    private static void streamMin(){
+        List<Integer> price=Arrays.asList(100,300,200,400,550,900);
+        //取最小值
+        System.out.println("min: "+price.stream().min(Integer::compare));
+    }
+
+    /**
+     *  取最大值
+     * 回傳Optional格式
+     */
+    private static void streamMax(){
+        List<Integer> price=Arrays.asList(100,300,200,400,550,900);
+        //取最大值
+        System.out.println("max: "+price.stream().max(Integer::compare));
+    }
+
+    /**
+     * anyMatch 判斷陣列中是否有符合條件的
+     * 回傳boolean
+     * @param fruits 水果
+     */
+    private static void streamAnyMatch(List<String> fruits){
+        //判斷list裡面是否有開頭有為a的
+        boolean isMatched=fruits.stream().anyMatch(fruit->fruit.startsWith("a"));
+        System.out.println("anyMatch: " + isMatched);
+    }
+
+    /**
+     * allMatch 判斷陣列中是否全部符合條件
+     * 回傳boolean
+     * @param fruits 水果
+     */
+    private static void streamAllMatch(List<String> fruits){
+        //判斷list裡面是否都開頭為a
+        boolean isMatched=fruits.stream().allMatch(fruit->fruit.startsWith("a"));
+        System.out.println("allMatch: " + isMatched);
+    }
+
+    /**
+     * noneMatch 判斷陣列中是否全部不符合條件
+     * 回傳boolean
+     * @param fruits 水果
+     */
+    private static void streamNoneMatch(List<String> fruits){
+        //判斷list裡面是否開頭都不為z
+        boolean isMatched=fruits.stream().noneMatch(fruit->fruit.startsWith("z"));
+        System.out.println("noneMatch: " + isMatched);
+    }
+
+    /**
+     * findFirst 取第一筆符合條件的資料
+     * 回傳Optional
+     * @param fruits 水果
+     */
+    private static void streamFindFirst(List<String> fruits){
+        //取第一筆
+        Optional<String> firstData=fruits.stream().findFirst();
+        System.out.println("findFirst: " + firstData);
+    }
+
 }
